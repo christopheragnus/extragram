@@ -9,12 +9,17 @@
       <%= @user.username %>
     </span>
     <span>
-      Follow
+      <%= form_for Following.new(user_id: @post.user_id) do |f| %>
+        <%= f.hidden_field :user_id %>
+        <%= hidden_field_tag "following[post_id]", @post.id %>
+        <%= f.submit 'Follow' %>
+      <% end %>
     </span>
   </div>
   <div class='body'>
-    <%= image_path 'world_of_engineering.jpg' %>
-    <%= image_tag 'world_of_engineering.jpg' %>
+    <% if @post.image? %>
+      <%= image_tag @post.image.url %>
+    <% end %>
     Image
   </div>
   <div>
@@ -26,6 +31,8 @@
   <div class='description'>
     <%= @post.description %>
   </div>
+  <%= link_to 'Add to Cart', cart_path(post_id: @post.id), method: :put, remote: true %>
+  | <%= link_to 'Checkout', cart_path %>
   <div class='comments'>
     Comments
   </div>
@@ -33,3 +40,8 @@
 
 <%= link_to 'Edit', edit_post_path(@post) %> |
 <%= link_to 'Back', posts_path %>
+
+
+
+
+
